@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">MyClientAndroid</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="personal_data">Personal Data</string>
+    <string name="name">name</string>
+    <string name="surname">surname</string>
+    <string name="gender">gender</string>
+    <string name="birth_date">birth date</string>
+    <string name="access_data">Access Data</string>
+    <string name="dni">dni</string>
+    <string name="btnFinish">btnFinish</string>
 </resources>
