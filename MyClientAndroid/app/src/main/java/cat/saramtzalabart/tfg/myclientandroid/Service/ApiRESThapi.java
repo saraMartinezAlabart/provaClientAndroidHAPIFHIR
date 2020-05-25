@@ -1,5 +1,8 @@
 package cat.saramtzalabart.tfg.myclientandroid.Service;
 
+import android.util.Log;
+
+import org.hl7.fhir.dstu3.model.Bundle;
 import org.hl7.fhir.dstu3.model.CodeableConcept;
 import org.hl7.fhir.dstu3.model.Coding;
 import org.hl7.fhir.dstu3.model.Enumerations;
@@ -18,16 +21,31 @@ import static org.hl7.fhir.dstu3.model.Enumerations.AdministrativeGender.UNKNOWN
 
 public class ApiRESThapi {
     private IGenericClient client;
+    private String DNI;
+    private IdType id;
 
     public ApiRESThapi() {
         this.client = MyContextFhir.getCtx().newRestfulGenericClient(Constants.serverBase);
+        this.DNI = "";
+        this.id = null;
     }
 
     public IGenericClient getClient() {
         return client;
     }
 
-    //SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    public IdType getId() {
+        return id;
+    }
+
+    public String getDNI() {
+        return DNI;
+    }
+
+    public void setDNI(String DNI) {
+        this.DNI = DNI;
+    }
+//SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     //TODO Call this methode frome Fragment Sign UP
     public IdType createPatient(String name, String surname, String gender, String birthDate, String dni){
@@ -53,6 +71,7 @@ public class ApiRESThapi {
                 .setText(text);
 
         Patient patient = new Patient();
+        //patient.setId(dni);
         patient.addIdentifier().setType(codeableConcept);
         patient.addIdentifier().setValue(dni);
         patient.addName().setFamily(surname).addGiven(name);
@@ -69,12 +88,43 @@ public class ApiRESThapi {
         return patientId;
     }
 
-    /*public IBaseBundle getPatient(String dni){
+    //TODO Call this methode frome Fragment Sign IN
+    public boolean patientExist(String dni){
         IBaseBundle response = client.search()
                 .forResource(Patient.class)
+                //TODO comprovar que code és correcte per obtenir el identificador del DNI del patient
                 .where(Patient.IDENTIFIER.exactly().code(dni))
                 .returnBundle(IBaseBundle.class)
                 .execute();
-        return response;
-    }*/
+
+        Log.println(Log.INFO, "S11", "This patient already exist: " + response.isEmpty());
+        if (response.isEmpty()){return false;}
+        else{this.DNI = dni; return true;}
+    }
+
+    //TODO Call this methode frome Fragment Settings
+    public Patient getMyPatient (String dni){
+
+           Patient patient = client.read()
+                .resource(Patient.class)
+                .withUrl(Constants.serverBase + "Patient?identifier=" + dni)
+                .execute();
+
+        return patient;
+    }
+
+    public Bundle getMyBundle (String dni){
+        Bundle patient = client.search()
+                .forResource(Patient.class)
+                .where(Patient.IDENTIFIER.exactly().code(dni))
+                .returnBundle(Bundle.class)
+                .execute();
+        return patient;
+    }
+
+
+
+
+
+
 }

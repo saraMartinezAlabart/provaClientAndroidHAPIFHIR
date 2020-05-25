@@ -11,6 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import androidx.fragment.app.Fragment;
+
+import org.hl7.fhir.dstu3.model.Patient;
+
 import cat.saramtzalabart.tfg.myclientandroid.R;
 import cat.saramtzalabart.tfg.myclientandroid.Service.ApiRESThapi;
 
@@ -84,6 +87,13 @@ public class SignUpFragment extends Fragment {
                     AlertDialog.Builder builder = new AlertDialog.Builder(SignUpFragment.this.getContext());
                     builder.setMessage("ID patient created:" + result);
                     builder.create().show();
+
+                    /*Patient patient = new Patient();
+                    patient = apiRESThapi.getMyPatient("2456789S");
+                    name = patient.ge*/
+                    /*org.hl7.fhir.dstu3.model.Bundle bundle = new org.hl7.fhir.dstu3.model.Bundle();
+                    bundle =  apiRESThapi.getMyBundle("2456789S");
+                    bundle.getE*/
                 }
             }
         });
