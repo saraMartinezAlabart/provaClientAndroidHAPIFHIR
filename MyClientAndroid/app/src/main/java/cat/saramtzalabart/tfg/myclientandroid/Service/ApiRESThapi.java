@@ -20,17 +20,15 @@ import static org.hl7.fhir.dstu3.model.Enumerations.AdministrativeGender.OTHER;
 import static org.hl7.fhir.dstu3.model.Enumerations.AdministrativeGender.UNKNOWN;
 
 public class ApiRESThapi {
-    private IGenericClient client;
-    private String DNI;
-    private IdType id;
+
+    //private String DNI;
+    //private IdType id;
 
     public ApiRESThapi() {
-        this.client = MyContextFhir.getCtx().newRestfulGenericClient(Constants.serverBase);
-        this.DNI = "";
-        this.id = null;
+        //this.client = MyContextFhir.getCtx().newRestfulGenericClient(Constants.serverBase);
     }
 
-    public IGenericClient getClient() {
+    /*public IGenericClient getClient() {
         return client;
     }
 
@@ -44,7 +42,7 @@ public class ApiRESThapi {
 
     public void setDNI(String DNI) {
         this.DNI = DNI;
-    }
+    }*/
 //SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     //TODO Call this methode frome Fragment Sign UP
@@ -78,7 +76,7 @@ public class ApiRESThapi {
         patient.setGender(ag);
         patient.setBirthDate(bd);
 
-        MethodOutcome outcome = client.create()
+        MethodOutcome outcome = MyContextFhir.getClient().create()
                 .resource(patient)
                 .prettyPrint()
                 .encodedJson()
@@ -89,7 +87,7 @@ public class ApiRESThapi {
     }
 
     //TODO Call this methode frome Fragment Sign IN
-    public boolean patientExist(String dni){
+   /* public boolean patientExist(String dni){
         IBaseBundle response = client.search()
                 .forResource(Patient.class)
                 //TODO comprovar que code és correcte per obtenir el identificador del DNI del patient
@@ -120,7 +118,7 @@ public class ApiRESThapi {
                 .returnBundle(Bundle.class)
                 .execute();
         return patient;
-    }
+    }*/
 
 
 
