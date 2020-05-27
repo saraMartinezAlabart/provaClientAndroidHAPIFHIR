@@ -1,6 +1,7 @@
 package cat.saramtzalabart.tfg.myclientandroid.Service;
 
 
+import android.util.Log;
 import org.hl7.fhir.dstu3.model.BooleanType;
 import org.hl7.fhir.dstu3.model.CodeableConcept;
 import org.hl7.fhir.dstu3.model.Coding;
@@ -20,6 +21,7 @@ import org.hl7.fhir.dstu3.model.Range;
 import org.hl7.fhir.dstu3.model.Reference;
 import org.hl7.fhir.dstu3.model.SimpleQuantity;
 import org.hl7.fhir.dstu3.model.StringType;
+import org.hl7.fhir.instance.model.api.IBaseBundle;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -452,8 +454,8 @@ public class ApiRESThapi {
      *
      *
      */
-    //TODO Call this methode frome Fragment Sign IN
-   /* public boolean patientExist(String dni){
+    //Call this methode frome Fragment Sign IN
+   public boolean patientExist(String dni){
         IBaseBundle response = MyContextFhir.getClient().search()
                 .forResource(Patient.class)
                 //TODO comprovar que code és correcte per obtenir el identificador del DNI del patient
@@ -463,7 +465,7 @@ public class ApiRESThapi {
 
         Log.println(Log.INFO, "S11", "This patient already exist: " + response.isEmpty());
         if (response.isEmpty()){return false;}
-        else{this.DNI = dni; return true;}
+        else{return true;}
     }
 
     /*
