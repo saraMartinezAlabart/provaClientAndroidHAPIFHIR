@@ -2,6 +2,8 @@ package cat.saramtzalabart.tfg.myclientandroid.Service;
 
 
 import android.util.Log;
+import android.widget.Toast;
+
 import org.hl7.fhir.dstu3.model.BooleanType;
 import org.hl7.fhir.dstu3.model.CodeableConcept;
 import org.hl7.fhir.dstu3.model.Coding;
@@ -14,6 +16,7 @@ import org.hl7.fhir.dstu3.model.Enumerations;
 import org.hl7.fhir.dstu3.model.IdType;
 import org.hl7.fhir.dstu3.model.MedicationStatement;
 import org.hl7.fhir.dstu3.model.Observation;
+import org.hl7.fhir.dstu3.model.OperationOutcome;
 import org.hl7.fhir.dstu3.model.Patient;
 import org.hl7.fhir.dstu3.model.Quantity;
 import org.hl7.fhir.dstu3.model.QuestionnaireResponse;
@@ -53,7 +56,7 @@ public class ApiRESThapi {
     *
     */
     //TODO Call this methode frome Fragment Sign UP
-    public boolean createPatient(String name, String surname, String gender, String birthDate, String dni){
+    public boolean createPatient(String name, String surname, String gender, String birthDate, String dni, final boolean update){
         //String resourceType = "Patient";
         String code = "DNI";
         String text = "Document Nacional d'Identitat";
@@ -75,25 +78,44 @@ public class ApiRESThapi {
                 .addCoding(coding)
                 .setText(text);
 
-        Patient patient = new Patient();
-        //patient.setId(dni);
+        final Patient patient = new Patient();
         patient.addIdentifier().setType(codeableConcept);
         patient.addIdentifier().setValue(dni);
         patient.addName().setFamily(surname).addGiven(name);
         patient.setGender(ag);
         patient.setBirthDate(bd);
 
-        MethodOutcome outcome = MyContextFhir.getClient().create()
-                .resource(patient)
-                .prettyPrint()
-                .encodedJson()
-                .execute();
+        final MethodOutcome[] outcome = new MethodOutcome[1];
+        Thread validateThread = new Thread() {
+            @Override
+            public void run() {
 
+                if (update) {
+                    patient.setId("Patient/" + user.getPatientId());
+                    outcome[0] = MyContextFhir.getClient().update()
+                            .resource(patient)
+                            .prettyPrint()
+                            .encodedJson()
+                            .execute();
 
-        IdType patientId = (IdType) outcome.getId();
-        user.setPatientId(patientId);
+                    IdType patientId = (IdType) outcome[0].getId();
+                    user.setPatientId(patientId);
+                } else {
 
-        return  outcome.getCreated();
+                    outcome[0] = MyContextFhir.getClient().create()
+                            .resource(patient)
+                            .prettyPrint()
+                            .encodedJson()
+                            .execute();
+                    Log.println(Log.INFO, "S11", "EEOOOOOOOOOOOOO" + String.valueOf(outcome[0]));
+                    IdType patientId = (IdType) outcome[0].getId();
+                    user.setPatientId(patientId);
+                }
+            }
+        };
+        validateThread.start();
+        //return  outcome[0].getCreated();
+        return true;
     }
     public boolean createDiagnosticReport (String typeDiabetes){
 

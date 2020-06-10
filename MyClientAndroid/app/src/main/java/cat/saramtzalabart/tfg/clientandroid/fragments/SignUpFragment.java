@@ -82,10 +82,10 @@ public class SignUpFragment extends Fragment {
 
                 } else {
                    // TODO Create the patient resource in the FHIR server
-                   String result = apiRESThapi.createPatient(nameValue, surnameValue, genderValue, birthDateValue, dniValue).getValue();
-                    Log.println(Log.INFO, "S11", "ID patient created: " + result);
+                   boolean result = apiRESThapi.createPatient(nameValue, surnameValue, genderValue, birthDateValue, dniValue, false);
+                    Log.println(Log.INFO, "S11", "Patient created: " + result);
                     AlertDialog.Builder builder = new AlertDialog.Builder(SignUpFragment.this.getContext());
-                    builder.setMessage("ID patient created:" + result);
+                    builder.setMessage("Patient created:" + result);
                     builder.create().show();
 
                     /*Patient patient = new Patient();
