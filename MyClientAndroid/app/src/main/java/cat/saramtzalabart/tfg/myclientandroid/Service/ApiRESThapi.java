@@ -97,9 +97,11 @@ public class ApiRESThapi {
                             .prettyPrint()
                             .encodedJson()
                             .execute();
-
+                    Log.println(Log.INFO, "S11", "UPDATED: " + String.valueOf(outcome[0].getCreated()));
+                    user.setResourceCreated(outcome[0].getCreated());
                     IdType patientId = (IdType) outcome[0].getId();
                     user.setPatientId(patientId);
+                    Log.println(Log.INFO, "S11", "Patient ID updated: " + String.valueOf(user.getPatientId()));
                 } else {
 
                     outcome[0] = MyContextFhir.getClient().create()
@@ -107,15 +109,20 @@ public class ApiRESThapi {
                             .prettyPrint()
                             .encodedJson()
                             .execute();
-                    Log.println(Log.INFO, "S11", "EEOOOOOOOOOOOOO" + String.valueOf(outcome[0]));
+                    user.setResourceCreated(outcome[0].getCreated());
+                    Log.println(Log.INFO, "S11", "CREATED: " + String.valueOf(outcome[0].getCreated()));
                     IdType patientId = (IdType) outcome[0].getId();
                     user.setPatientId(patientId);
+                    Log.println(Log.INFO, "S11", "Patient ID: " + String.valueOf(user.getPatientId()));
+
                 }
             }
         };
         validateThread.start();
         //return  outcome[0].getCreated();
-        return true;
+        /*if (outcome[0].getResource().getIdElement() != null) {return true;}
+        else{return false;}*/
+        return user.getResourceCreated();
     }
     public boolean createDiagnosticReport (String typeDiabetes){
 

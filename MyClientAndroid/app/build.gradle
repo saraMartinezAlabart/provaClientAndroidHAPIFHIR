@@ -20,12 +20,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
 }
 configurations {
     all*.exclude group: 'org.codehaus.woodstox'
     all*.exclude group: 'org.apache.httpcomponents'
 }
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'ca.uhn.hapi.fhir:hapi-fhir-android:4.2.0'

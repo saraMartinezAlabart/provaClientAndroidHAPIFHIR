@@ -5,6 +5,8 @@ import org.hl7.fhir.dstu3.model.IdType;
 public class UserProvider {
     //MY IDENTIFIER
     //private String dni;
+    //TODO pensar si cal per a tots els recursos o si no cal però igualment prefereixo tenir un per a cada thread
+    private boolean resourceCreated;
 
     //MY PATIENT
     private IdType patientId;
@@ -34,6 +36,7 @@ public class UserProvider {
         this.observationCarbsId=null;
         this.observationMealId=null;
         this.medicationStatementId=null;
+        this.resourceCreated=false;
     }
 
     /*public String getDni() {
@@ -88,6 +91,8 @@ public class UserProvider {
         return deviceId;
     }
 
+    public boolean getResourceCreated(){return resourceCreated;}
+
     public void setDiagnosticReportId(IdType diagnosticReportId) {
         this.diagnosticReportId = diagnosticReportId;
     }
@@ -106,6 +111,10 @@ public class UserProvider {
 
     public void setConditionHyperId(IdType conditionHyperId) {
         this.conditionHyperId = conditionHyperId;
+    }
+
+    public void setResourceCreated(boolean created){
+        this.resourceCreated=created;
     }
 
     public void setDeviceId(IdType deviceId) {
