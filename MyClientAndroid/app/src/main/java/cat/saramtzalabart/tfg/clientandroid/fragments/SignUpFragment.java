@@ -11,9 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import androidx.fragment.app.Fragment;
-
-import org.hl7.fhir.dstu3.model.Patient;
-
 import cat.saramtzalabart.tfg.myclientandroid.R;
 import cat.saramtzalabart.tfg.myclientandroid.Service.ApiRESThapi;
 
@@ -63,38 +60,28 @@ public class SignUpFragment extends Fragment {
 
 
         btnFinish= view.findViewById(R.id.btnFinish);
-        btnFinish.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String nameValue = addName.getText().toString();
-                String surnameValue = addSurname.getText().toString();
-                String genderValue = spinnerGender.getSelectedItem().toString();
-                String birthDateValue = addBirthDate.getText().toString();
-                String dniValue = addDNI.getText().toString();
+        btnFinish.setOnClickListener(v -> {
+            String nameValue = addName.getText().toString();
+            String surnameValue = addSurname.getText().toString();
+            String genderValue = spinnerGender.getSelectedItem().toString();
+            String birthDateValue = addBirthDate.getText().toString();
+            String dniValue = addDNI.getText().toString();
 
 
-                if (nameValue.equals("") || surnameValue.equals("") || birthDateValue.equals("") || dniValue.equals("") || genderValue.equals("") ||
-                        birthDateValue.equals("")) {
+            if (nameValue.equals("") || surnameValue.equals("") || birthDateValue.equals("") || dniValue.equals("") || genderValue.equals("") ||
+                    birthDateValue.equals("")) {
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(SignUpFragment.this.getContext());
-                    builder.setMessage("Some empty text or not correct!");
-                    builder.create().show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(SignUpFragment.this.getContext());
+                builder.setMessage("Some empty text or not correct!");
+                builder.create().show();
 
-                } else {
-                   // TODO Create the patient resource in the FHIR server
-                   boolean result = apiRESThapi.createPatient(nameValue, surnameValue, genderValue, birthDateValue, dniValue, false);
-                    Log.println(Log.INFO, "S11", "Patient created: " + result);
-                    AlertDialog.Builder builder = new AlertDialog.Builder(SignUpFragment.this.getContext());
-                    builder.setMessage("Patient created:" + result);
-                    builder.create().show();
-
-                    /*Patient patient = new Patient();
-                    patient = apiRESThapi.getMyPatient("2456789S");
-                    name = patient.ge*/
-                    /*org.hl7.fhir.dstu3.model.Bundle bundle = new org.hl7.fhir.dstu3.model.Bundle();
-                    bundle =  apiRESThapi.getMyBundle("2456789S");
-                    bundle.getE*/
-                }
+            } else {
+               //Create the patient resource in the FHIR server
+                apiRESThapi.createPatient(nameValue, surnameValue, genderValue, birthDateValue, dniValue, false);
+                //Log.println(Log.INFO, "S11", "Patient created: " + result);
+                AlertDialog.Builder builder = new AlertDialog.Builder(SignUpFragment.this.getContext());
+                builder.setMessage("Patient created:" + true/*result*/);
+                builder.create().show();
             }
         });
         return view;
